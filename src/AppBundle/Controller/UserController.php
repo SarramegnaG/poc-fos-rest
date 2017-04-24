@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
@@ -30,6 +31,25 @@ class UserController extends Controller
                 'email' => $user->getEmail(),
             ];
         }
+
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/users/{id}", requirements={"id" = "\d+"}, name="users_one")
+     * @Method({"GET"})
+     */
+    public function getUserAction(Request $request)
+    {
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($request->get('id'));
+        /* @var $user User */
+
+        $formatted = [
+            'id' => $user->getId(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+            'email' => $user->getEmail(),
+        ];
 
         return new JsonResponse($formatted);
     }
