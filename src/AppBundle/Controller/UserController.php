@@ -62,4 +62,20 @@ class UserController extends Controller
             return $form;
         }
     }
+
+    /**
+     * @Rest\Delete("/users/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     */
+    public function removeUserAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->find($id);
+        /* @var $user User */
+
+        if ($user) {
+            $em->remove($user);
+            $em->flush();
+        }
+    }
 }
