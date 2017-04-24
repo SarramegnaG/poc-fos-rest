@@ -3,18 +3,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
     /**
-     * @Route("/users", name="users_list")
-     * @Method({"GET"})
+     * @Rest\Get("/users")
+     * @Rest\View()
      */
     public function getUsersAction()
     {
@@ -23,39 +21,29 @@ class UserController extends Controller
             ->findAll();
         /* @var $users User[] */
 
-        $formatted = [];
-        foreach ($users as $user) {
-            $formatted[] = [
-                'id' => $user->getId(),
-                'firstname' => $user->getFirstname(),
-                'lastname' => $user->getLastname(),
-                'email' => $user->getEmail(),
-            ];
-        }
+        $view = View::create($users);
+        $view->setFormat('json');
 
-        return new JsonResponse($formatted);
+        return $view;
     }
 
     /**
-     * @Route("/users/{id}", requirements={"id" = "\d+"}, name="users_one")
-     * @Method({"GET"})
+     * @Rest\Get("/users/{id}")
+     * @Rest\View()
      */
-    public function getUserAction(Request $request)
+    public function getUserAction($id)
     {
-        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($request->get('id'));
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
         /* @var $user User */
 
         if (empty($user)) {
-            return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+            $view = View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        } else {
+            $view = View::create($user);
         }
 
-        $formatted = [
-            'id' => $user->getId(),
-            'firstname' => $user->getFirstname(),
-            'lastname' => $user->getLastname(),
-            'email' => $user->getEmail(),
-        ];
+        $view->setFormat('json');
 
-        return new JsonResponse($formatted);
+        return $view;
     }
 }

@@ -3,55 +3,45 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Place;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PlaceController extends Controller
 {
     /**
-     * @Route("/places", name="places_list")
-     * @Method({"GET"})
+     * @Rest\Get("/places")
+     * @Rest\View()
      */
     public function getPlacesAction()
     {
         $places = $this->getDoctrine()->getRepository('AppBundle:Place')->findAll();
         /* @var $places Place[] */
 
-        $formatted = [];
-        foreach ($places as $place) {
-            $formatted[] = [
-                'id' => $place->getId(),
-                'name' => $place->getName(),
-                'address' => $place->getAddress(),
-            ];
-        }
+        $view = View::create($places);
+        $view->setFormat('json');
 
-        return new JsonResponse($formatted);
+        return $view;
     }
 
     /**
-     * @Route("/places/{id}", requirements={"id" = "\d+"}, name="places_one")
-     * @Method({"GET"})
+     * @Rest\Get("/places/{id}")
+     * @Rest\View()
      */
-    public function getPlaceAction(Request $request)
+    public function getPlaceAction($id)
     {
-        $place = $this->getDoctrine()->getRepository('AppBundle:Place')->find($request->get('id'));
+        $place = $this->getDoctrine()->getRepository('AppBundle:Place')->find($id);
         /* @var $place Place */
 
         if (empty($place)) {
-            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+            $view = View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+        } else {
+            $view = View::create($place);
         }
 
-        $formatted = [
-            'id' => $place->getId(),
-            'name' => $place->getName(),
-            'address' => $place->getAddress(),
-        ];
+        $view->setFormat('json');
 
-        return new JsonResponse($formatted);
+        return $view;
     }
 }
