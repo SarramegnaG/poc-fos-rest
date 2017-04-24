@@ -21,10 +21,7 @@ class UserController extends Controller
             ->findAll();
         /* @var $users User[] */
 
-        $view = View::create($users);
-        $view->setFormat('json');
-
-        return $view;
+        return $users;
     }
 
     /**
@@ -37,13 +34,9 @@ class UserController extends Controller
         /* @var $user User */
 
         if (empty($user)) {
-            $view = View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
-        } else {
-            $view = View::create($user);
+            return View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $view->setFormat('json');
-
-        return $view;
+        return $user;
     }
 }

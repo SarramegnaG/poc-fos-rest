@@ -19,10 +19,7 @@ class PlaceController extends Controller
         $places = $this->getDoctrine()->getRepository('AppBundle:Place')->findAll();
         /* @var $places Place[] */
 
-        $view = View::create($places);
-        $view->setFormat('json');
-
-        return $view;
+        return $places;
     }
 
     /**
@@ -35,13 +32,9 @@ class PlaceController extends Controller
         /* @var $place Place */
 
         if (empty($place)) {
-            $view = View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
-        } else {
-            $view = View::create($place);
+            return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $view->setFormat('json');
-
-        return $view;
+        return $place;
     }
 }
