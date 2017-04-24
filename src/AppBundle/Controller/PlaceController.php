@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class PlaceController extends Controller
 {
@@ -27,6 +28,24 @@ class PlaceController extends Controller
                 'address' => $place->getAddress(),
             ];
         }
+
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/places/{id}", requirements={"id" = "\d+"}, name="places_one")
+     * @Method({"GET"})
+     */
+    public function getPlaceAction(Request $request)
+    {
+        $place = $this->getDoctrine()->getRepository('AppBundle:Place')->find($request->get('id'));
+        /* @var $place Place */
+
+        $formatted = [
+            'id' => $place->getId(),
+            'name' => $place->getName(),
+            'address' => $place->getAddress(),
+        ];
 
         return new JsonResponse($formatted);
     }
