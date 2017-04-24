@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Place
  *
- * @ORM\Table(name="place")
+ * @ORM\Table(name="places", uniqueConstraints={@ORM\UniqueConstraint(name="places_name_unique", columns={"name"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlaceRepository")
+ * @UniqueEntity("name")
  */
 class Place
 {
@@ -25,6 +28,7 @@ class Place
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -32,6 +36,7 @@ class Place
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $address;
 

@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="users_email_unique", columns={"email"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
 class User
 {
@@ -25,6 +28,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="firstname")
+     * @Assert\NotBlank()
      */
     private $firstname;
 
@@ -32,6 +36,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="lastname")
+     * @Assert\NotBlank()
      */
     private $lastname;
 
@@ -39,6 +44,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="email")
+     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 

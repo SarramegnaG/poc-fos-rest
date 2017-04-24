@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Place;
+use AppBundle\Form\Type\PlaceType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PlaceController extends Controller
@@ -36,5 +38,26 @@ class PlaceController extends Controller
         }
 
         return $place;
+    }
+
+    /**
+     * @Rest\Post("/places")
+     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     */
+    public function postPlacesAction(Request $request)
+    {
+        $place = new Place();
+        $form = $this->createForm(PlaceType::class, $place);
+
+        $form->submit($request->request->all()); // Validation des données
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($place);
+            $em->flush();
+            return $place;
+        } else {
+            return $form;
+        }
     }
 }
