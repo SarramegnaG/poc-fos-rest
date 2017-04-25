@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,6 +22,8 @@ class Price
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"place", "price"})
      */
     private $id;
 
@@ -28,8 +31,11 @@ class Price
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotNull()
      * @Assert\Choice({"less_than_12", "for_all"})
+     *
+     * @Groups({"place", "price"})
      */
     private $type;
 
@@ -41,6 +47,8 @@ class Price
      * @Assert\NotNull()
      * @Assert\Type("numeric")
      * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Groups({"place", "price"})
      */
     private $value;
 
@@ -48,6 +56,8 @@ class Price
      * @var Place
      *
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="prices")
+     *
+     * @Groups({"price"})
      */
     protected $place;
 

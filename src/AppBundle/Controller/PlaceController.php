@@ -14,7 +14,7 @@ class PlaceController extends Controller
 {
     /**
      * @Rest\Get("/places")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      */
     public function getPlacesAction()
     {
@@ -26,7 +26,7 @@ class PlaceController extends Controller
 
     /**
      * @Rest\Get("/places/{id}")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      */
     public function getPlaceAction($id)
     {
@@ -42,7 +42,7 @@ class PlaceController extends Controller
 
     /**
      * @Rest\Post("/places")
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"place"})
      */
     public function postPlacesAction(Request $request)
     {
@@ -79,7 +79,7 @@ class PlaceController extends Controller
 
     /**
      * @Rest\Put("/places/{id}")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      */
     public function putPlaceAction(Request $request)
     {
@@ -88,7 +88,7 @@ class PlaceController extends Controller
 
     /**
      * @Rest\Patch("/places/{id}")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      */
     public function patchPlaceAction(Request $request)
     {
