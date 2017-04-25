@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity("email")
  */
-class User
+class User implements UserInterface
 {
     const MATCH_VALUE_THRESHOLD = 25;
 
@@ -36,6 +37,7 @@ class User
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
+     * @Assert\Type("string")
      *
      * @Groups({"user", "preference"})
      */
@@ -47,6 +49,7 @@ class User
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
+     * @Assert\Type("string")
      *
      * @Groups({"user", "preference"})
      */
@@ -72,6 +75,22 @@ class User
      * @Groups({"user"})
      */
     protected $preferences;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $password;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(groups={"New", "FullUpdate"})
+     * @Assert\Type("string")
+     * @Assert\Length(min=4, max=50)
+     */
+    protected $plainPassword;
 
     public function __construct()
     {
@@ -215,5 +234,87 @@ class User
         }
 
         return $matchValue >= self::MATCH_VALUE_THRESHOLD;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return [];
+    }
+
+    /**
+     * Get salt
+     *
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Erase credentials
+     */
+    public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
+
+    /**
+     * Set plain password
+     *
+     * @param string $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * Get plain password
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 }
