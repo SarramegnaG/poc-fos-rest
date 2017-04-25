@@ -6,10 +6,10 @@ use AppBundle\Entity\Place;
 use AppBundle\Entity\Theme;
 use AppBundle\Form\Type\ThemeType;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ThemeController extends Controller
 {
@@ -23,7 +23,7 @@ class ThemeController extends Controller
         /* @var $place Place */
 
         if (!$place) {
-            return $this->placeNotFound();
+            throw new NotFoundHttpException('Place not found');
         }
 
         return $place->getThemes();
@@ -39,7 +39,7 @@ class ThemeController extends Controller
         /* @var $place Place */
 
         if (!$place) {
-            return $this->placeNotFound();
+            throw new NotFoundHttpException('Place not found');
         }
 
         $theme = new Theme();
@@ -56,10 +56,5 @@ class ThemeController extends Controller
         } else {
             return $form;
         }
-    }
-
-    private function placeNotFound()
-    {
-        return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
     }
 }

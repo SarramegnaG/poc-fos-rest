@@ -6,10 +6,10 @@ use AppBundle\Entity\Place;
 use AppBundle\Entity\Price;
 use AppBundle\Form\Type\PriceType;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PriceController extends Controller
 {
@@ -23,7 +23,7 @@ class PriceController extends Controller
         /* @var $place Place */
 
         if (!$place) {
-            return $this->placeNotFound();
+            throw new NotFoundHttpException('Place not found');
         }
 
         return $place->getPrices();
@@ -39,7 +39,7 @@ class PriceController extends Controller
         /* @var $place Place */
 
         if (!$place) {
-            return $this->placeNotFound();
+            throw new NotFoundHttpException('Place not found');
         }
 
         $price = new Price();
@@ -56,10 +56,5 @@ class PriceController extends Controller
         } else {
             return $form;
         }
-    }
-
-    private function placeNotFound()
-    {
-        return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
     }
 }

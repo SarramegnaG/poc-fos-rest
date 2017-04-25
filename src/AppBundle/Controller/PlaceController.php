@@ -5,10 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Place;
 use AppBundle\Form\Type\PlaceType;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PlaceController extends Controller
 {
@@ -34,7 +34,7 @@ class PlaceController extends Controller
         /* @var $place Place */
 
         if (!$place) {
-            return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Place not found');
         }
 
         return $place;
@@ -101,7 +101,7 @@ class PlaceController extends Controller
         /* @var $place Place */
 
         if (!$place) {
-            return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Place not found');
         }
 
         $form = $this->createForm(PlaceType::class, $place);

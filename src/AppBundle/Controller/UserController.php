@@ -5,10 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\UserType;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
@@ -36,7 +36,7 @@ class UserController extends Controller
         /* @var $user User */
 
         if (!$user) {
-            $this->userNotFound();
+            throw new NotFoundHttpException('User not found');
         }
 
         return $user;
@@ -107,7 +107,7 @@ class UserController extends Controller
         /* @var $user User */
 
         if (!$user) {
-            $this->userNotFound();
+            throw new NotFoundHttpException('User not found');
         }
 
         if ($clearMissing) {
@@ -147,7 +147,7 @@ class UserController extends Controller
         /* @var $user User */
 
         if (!$user) {
-            return $this->userNotFound();
+            throw new NotFoundHttpException('User not found');
         }
 
         $suggestions = [];
@@ -161,10 +161,5 @@ class UserController extends Controller
         }
 
         return $suggestions;
-    }
-
-    private function userNotFound()
-    {
-        return View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
     }
 }

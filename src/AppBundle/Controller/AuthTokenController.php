@@ -6,10 +6,10 @@ use AppBundle\Entity\AuthToken;
 use AppBundle\Entity\Credentials;
 use AppBundle\Form\Type\CredentialsType;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AuthTokenController extends Controller
 {
@@ -33,14 +33,14 @@ class AuthTokenController extends Controller
         $user = $em->getRepository('AppBundle:User')->findOneByEmail($credentials->getLogin());
 
         if (!$user) {
-            return $this->invalidCredentials();
+            throw new BadRequestHttpException('Invalid credentials');
         }
 
         $encoder = $this->get('security.password_encoder');
         $isPasswordValid = $encoder->isPasswordValid($user, $credentials->getPassword());
 
         if (!$isPasswordValid) {
-            return $this->invalidCredentials();
+            throw new BadRequestHttpException('Invalid credentials');
         }
 
         $authToken = new AuthToken();
@@ -52,10 +52,5 @@ class AuthTokenController extends Controller
         $em->flush();
 
         return $authToken;
-    }
-
-    private function invalidCredentials()
-    {
-        return View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
     }
 }
