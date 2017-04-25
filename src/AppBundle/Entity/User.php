@@ -27,7 +27,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Groups({"user", "preference"})
+     * @Groups({"user", "preference", "auth-token"})
      */
     private $id;
 
@@ -39,7 +39,7 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Type("string")
      *
-     * @Groups({"user", "preference"})
+     * @Groups({"user", "preference", "auth-token"})
      */
     private $firstname;
 
@@ -51,7 +51,7 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Type("string")
      *
-     * @Groups({"user", "preference"})
+     * @Groups({"user", "preference", "auth-token"})
      */
     private $lastname;
 
@@ -63,7 +63,7 @@ class User implements UserInterface
      * @Assert\Email()
      * @Assert\NotBlank()
      *
-     * @Groups({"user", "preference"})
+     * @Groups({"user", "preference", "auth-token"})
      */
     private $email;
 
