@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User
 {
+    const MATCH_VALUE_THRESHOLD = 25;
+
     /**
      * @var int
      *
@@ -190,5 +192,28 @@ class User
     public function getPreferences()
     {
         return $this->preferences;
+    }
+
+    /**
+     * Check if preferences matches
+     *
+     * @param $themes
+     *
+     * @return bool
+     */
+    public function preferencesMatch($themes)
+    {
+        $matchValue = 0;
+        foreach ($this->preferences as $preference) {
+            /** @var Preference $preference */
+            foreach ($themes as $theme) {
+                /** @var Theme $theme */
+                if ($preference->match($theme)) {
+                    $matchValue += $preference->getValue() * $theme->getValue();
+                }
+            }
+        }
+
+        return $matchValue >= self::MATCH_VALUE_THRESHOLD;
     }
 }

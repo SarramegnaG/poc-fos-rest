@@ -143,4 +143,16 @@ class Preference
     {
         return $this->user;
     }
+
+    /**
+     * Check if theme matches with preference
+     *
+     * @param Theme $theme
+     *
+     * @return bool
+     */
+    public function match(Theme $theme)
+    {
+        return $this->name === $theme->getName();
+    }
 }
