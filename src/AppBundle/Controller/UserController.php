@@ -35,7 +35,7 @@ class UserController extends Controller
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
         /* @var $user User */
 
-        if (empty($user)) {
+        if (!$user) {
             return View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
@@ -76,6 +76,48 @@ class UserController extends Controller
         if ($user) {
             $em->remove($user);
             $em->flush();
+        }
+    }
+
+    /**
+     * @Rest\Put("/users/{id}")
+     * @Rest\View()
+     */
+    public function putUserAction(Request $request)
+    {
+        return $this->updateUser($request, true);
+    }
+
+    /**
+     * @Rest\Patch("/users/{id}")
+     * @Rest\View()
+     */
+    public function patchUserAction(Request $request)
+    {
+        return $this->updateUser($request, false);
+    }
+
+    private function updateUser(Request $request, $clearMissing)
+    {
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($request->get('id'));
+        /* @var $user User */
+
+        if (!$user) {
+            return View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->createForm(UserType::class, $user);
+
+        // Le paramètre false dit à Symfony de garder les valeurs dans notre
+        // entité si l'utilisateur n'en fournit pas une dans sa requête
+        $form->submit($request->request->all(), $clearMissing);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $user;
+        } else {
+            return $form;
         }
     }
 }

@@ -33,7 +33,7 @@ class PlaceController extends Controller
         $place = $this->getDoctrine()->getRepository('AppBundle:Place')->find($id);
         /* @var $place Place */
 
-        if (empty($place)) {
+        if (!$place) {
             return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
@@ -74,6 +74,46 @@ class PlaceController extends Controller
         if ($place) {
             $em->remove($place);
             $em->flush();
+        }
+    }
+
+    /**
+     * @Rest\Put("/places/{id}")
+     * @Rest\View()
+     */
+    public function putPlaceAction(Request $request)
+    {
+        return $this->updatePlace($request, true);
+    }
+
+    /**
+     * @Rest\Patch("/places/{id}")
+     * @Rest\View()
+     */
+    public function patchPlaceAction(Request $request)
+    {
+        return $this->updatePlace($request, false);
+    }
+
+    private function updatePlace(Request $request, $clearMissing)
+    {
+        $place = $this->getDoctrine()->getRepository('AppBundle:Place')->find($request->get('id'));
+        /* @var $place Place */
+
+        if (!$place) {
+            return View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->createForm(PlaceType::class, $place);
+
+        $form->submit($request->request->all(), $clearMissing);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $place;
+        } else {
+            return $form;
         }
     }
 }
