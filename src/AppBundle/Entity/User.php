@@ -18,7 +18,7 @@ class User
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -27,7 +27,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="firstname")
+     * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
     private $firstname;
@@ -35,7 +35,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="lastname")
+     * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
     private $lastname;
@@ -43,7 +43,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="email")
+     * @ORM\Column(type="string")
      * @Assert\Email()
      * @Assert\NotBlank()
      */
@@ -131,4 +131,3 @@ class User
         return $this->email;
     }
 }
-
