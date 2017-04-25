@@ -53,7 +53,7 @@ class Place
     /**
      * @var Price[]
      *
-     * @ORM\OneToMany(targetEntity="Price", mappedBy="place")
+     * @ORM\OneToMany(targetEntity="Price", mappedBy="place", cascade={"remove"})
      *
      * @Groups({"place"})
      */

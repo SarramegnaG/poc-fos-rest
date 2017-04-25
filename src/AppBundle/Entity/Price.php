@@ -56,6 +56,7 @@ class Price
      * @var Place
      *
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="prices")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Groups({"price"})
      */
