@@ -53,4 +53,22 @@ class AuthTokenController extends Controller
 
         return $authToken;
     }
+
+    /**
+     * @Rest\Delete("/auth-tokens/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     */
+    public function removeAuthTokenAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $authToken = $em->getRepository('AppBundle:AuthToken')->find($id);
+        /* @var $authToken AuthToken */
+
+        if ($authToken && $authToken->getUser()->getId() === $this->getUser()->getId()) {
+            $em->remove($authToken);
+            $em->flush();
+        } else {
+            throw new BadRequestHttpException();
+        }
+    }
 }
