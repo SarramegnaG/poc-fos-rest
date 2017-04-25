@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     /**
      * @Rest\Get("/users")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"user"})
      */
     public function getUsersAction()
     {
@@ -28,7 +28,7 @@ class UserController extends Controller
 
     /**
      * @Rest\Get("/users/{id}")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"user"})
      */
     public function getUserAction($id)
     {
@@ -44,7 +44,7 @@ class UserController extends Controller
 
     /**
      * @Rest\Post("/users")
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"user"})
      */
     public function postUsersAction(Request $request)
     {
@@ -81,7 +81,7 @@ class UserController extends Controller
 
     /**
      * @Rest\Put("/users/{id}")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"user"})
      */
     public function putUserAction(Request $request)
     {
@@ -90,7 +90,7 @@ class UserController extends Controller
 
     /**
      * @Rest\Patch("/users/{id}")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"user"})
      */
     public function patchUserAction(Request $request)
     {

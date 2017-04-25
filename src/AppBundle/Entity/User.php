@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,6 +23,8 @@ class User
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"user", "preference"})
      */
     private $id;
 
@@ -28,7 +32,10 @@ class User
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
+     *
+     * @Groups({"user", "preference"})
      */
     private $firstname;
 
@@ -36,7 +43,10 @@ class User
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
+     *
+     * @Groups({"user", "preference"})
      */
     private $lastname;
 
@@ -44,10 +54,27 @@ class User
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\Email()
      * @Assert\NotBlank()
+     *
+     * @Groups({"user", "preference"})
      */
     private $email;
+
+    /**
+     * @var Preference[]
+     *
+     * @ORM\OneToMany(targetEntity="Preference", mappedBy="user")
+     *
+     * @Groups({"user"})
+     */
+    protected $preferences;
+
+    public function __construct()
+    {
+        $this->preferences = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -129,5 +156,39 @@ class User
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Add preference
+     *
+     * @param \AppBundle\Entity\Preference $preference
+     *
+     * @return User
+     */
+    public function addPreference(\AppBundle\Entity\Preference $preference)
+    {
+        $this->preferences[] = $preference;
+
+        return $this;
+    }
+
+    /**
+     * Remove preference
+     *
+     * @param \AppBundle\Entity\Preference $preference
+     */
+    public function removePreference(\AppBundle\Entity\Preference $preference)
+    {
+        $this->preferences->removeElement($preference);
+    }
+
+    /**
+     * Get preferences
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
     }
 }
