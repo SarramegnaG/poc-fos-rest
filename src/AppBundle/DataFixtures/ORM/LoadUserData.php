@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\AuthToken;
 use AppBundle\Entity\Preference;
 use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -36,12 +37,14 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
                 'name' => 'sport',
                 'value' => 3,
             ]],
+            'authToken' => 'iGpKTcvbNA2eRvOtvN0EIVWYD4a6TE+uzR56rLNO2GujFysdLbD7hNp/QiVlClXmXEA=',
         ], [
             'firstname' => 'Ef',
             'lastname' => 'Ghi',
             'email' => 'ef.ghi@test.local',
             'plainPassword' => 'test',
             'preferences' => [],
+            'authToken' => '',
         ]];
 
         foreach ($users as $u) {
@@ -67,6 +70,16 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
                     ->setValue($p['value'])
                 ;
                 $manager->persist($preference);
+            }
+
+            if ($u['authToken']) {
+                $authToken = new AuthToken();
+                $authToken
+                    ->setUser($user)
+                    ->setValue($u['authToken'])
+                    ->setCreatedAt(new \DateTime())
+                ;
+                $manager->persist($authToken);
             }
         }
 
