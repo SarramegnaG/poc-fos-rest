@@ -53,7 +53,9 @@ class Place
     /**
      * @var Price[]
      *
-     * @ORM\OneToMany(targetEntity="Price", mappedBy="place", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Price", mappedBy="place", cascade={"persist", "remove"})
+     *
+     * @Assert\Valid()
      *
      * @Groups({"place"})
      */
@@ -142,6 +144,7 @@ class Place
     public function addPrice(\AppBundle\Entity\Price $price)
     {
         $this->prices[] = $price;
+        $price->setPlace($this);
 
         return $this;
     }
