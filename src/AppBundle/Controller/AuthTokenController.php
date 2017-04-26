@@ -6,6 +6,7 @@ use AppBundle\Entity\AuthToken;
 use AppBundle\Entity\Credentials;
 use AppBundle\Form\Type\CredentialsType;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class AuthTokenController extends Controller
 {
     /**
+     * @ApiDoc(
+     *    description="Crée un token d'authentification",
+     *    input={"class"=CredentialsType::class, "name"=""},
+     *    statusCodes = {
+     *        201="Création avec succès",
+     *        400="Formulaire invalide"
+     *    },
+     *    responseMap={
+     *         201={"class"=AuthToken::class, "groups"={"auth-token"}},
+     *         400={"class"=CredentialsType::class, "fos_rest_form_errors"=true, "name"=""}
+     *    }
+     * )
+     *
      * @Rest\Post("/auth-tokens")
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"auth-token"})
      */
