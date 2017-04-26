@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Form\Validator\Constraint\PriceTypeUnique;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -56,6 +57,7 @@ class Place
      * @ORM\OneToMany(targetEntity="Price", mappedBy="place", cascade={"persist", "remove"})
      *
      * @Assert\Valid()
+     * @PriceTypeUnique()
      *
      * @Groups({"place"})
      */

@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="prices", uniqueConstraints={@ORM\UniqueConstraint(name="prices_type_place_unique", columns={"type", "place_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PriceRepository")
- * @UniqueEntity({"type", "place"})
  */
 class Price
 {
