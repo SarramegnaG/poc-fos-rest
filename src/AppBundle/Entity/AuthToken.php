@@ -3,13 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * AuthToken
  *
  * @ORM\Table(name="auth_tokens", uniqueConstraints={@ORM\UniqueConstraint(name="auth_tokens_value_unique", columns={"value"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AuthTokenRepository")
+ * @ExclusionPolicy("none")
  */
 class AuthToken
 {
