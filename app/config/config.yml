@@ -83,6 +83,8 @@ fos_rest:
     format_listener:
         rules:
             - { path: '^/', priorities: ['json', 'xml'], fallback_format: 'json', prefer_extension: false }
+    param_fetcher_listener:
+        enabled: true
     exception:
         enabled: true
         messages:

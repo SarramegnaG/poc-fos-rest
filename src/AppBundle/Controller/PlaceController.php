@@ -4,7 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Place;
 use AppBundle\Form\Type\PlaceType;
+use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +16,37 @@ class PlaceController extends Controller
 {
     /**
      * @Rest\Get("/places")
+     * @Rest\QueryParam(name="offset", requirements="\d+", default="", description="Index de début de la pagination")
+     * @Rest\QueryParam(name="limit", requirements="\d+", default="", description="Nombre d'éléments de la pagination")
+     * @Rest\QueryParam(name="sort", requirements="(asc|desc)", nullable=true, description="Ordre de tri (basé sur le nom)")
      * @Rest\View(serializerGroups={"place"})
      */
-    public function getPlacesAction()
+    public function getPlacesAction(ParamFetcher $paramFetcher)
     {
-        $places = $this->getDoctrine()->getRepository('AppBundle:Place')->findAll();
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $sort = $paramFetcher->get('sort');
+
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        /** @var QueryBuilder $qb */
+        $qb
+            ->select('p')
+            ->from('AppBundle:Place', 'p')
+        ;
+
+        if ($offset !== "") {
+            $qb->setFirstResult($offset);
+        }
+
+        if ($limit !== "") {
+            $qb->setMaxResults($limit);
+        }
+
+        if (in_array($sort, ['asc', 'desc'])) {
+            $qb->orderBy('p.name', $sort);
+        }
+
+        $places = $qb->getQuery()->getResult();
         /* @var $places Place[] */
 
         return $places;
