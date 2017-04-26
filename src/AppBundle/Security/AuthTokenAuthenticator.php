@@ -10,26 +10,22 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
-use Symfony\Component\Security\Http\HttpUtils;
 
 class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface
 {
     // Durée de validité du token en secondes, 12 heures
     const TOKEN_VALIDITY_DURATION = 12 * 3600;
 
-    protected $httpUtils;
-
-    public function __construct(HttpUtils $httpUtils)
-    {
-        $this->httpUtils = $httpUtils;
-    }
-
     public function createToken(Request $request, $providerKey)
     {
+        $autorisedPaths = [
+            'post_users',
+            'post_auth_tokens',
+        ];
 
-        $targetUrl = '/auth-tokens';
-        // Si la requête est une création de token, aucune vérification n'est effectuée
-        if ($request->getMethod() === "POST" && $this->httpUtils->checkRequestPath($request, $targetUrl)) {
+        $currentRoute = $request->attributes->get('_route');
+
+        if (in_array($currentRoute, $autorisedPaths)) {
             return;
         }
 

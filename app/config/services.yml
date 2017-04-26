@@ -21,7 +21,6 @@ services:
 
     auth_token_authenticator:
         class:     AppBundle\Security\AuthTokenAuthenticator
-        arguments: ["@security.http_utils"]
         public:    false
 
     app_bundle.api_doc.fos_rest_form_errors_parser:
