@@ -22,7 +22,7 @@ class FOSRestFormErrorsParser implements ParserInterface, PostParserInterface
     {
         $params = [];
 
-        // Il faut d'abord désactiver tous les anciens paramètres créer par d'autres parseurs avant de reformater
+        // Il faut d'abord désactiver tous les anciens paramètres créé par d'autres parseurs avant de reformater
         foreach ($parameters as $key => $parameter) {
             $params[$key] = null;
         }

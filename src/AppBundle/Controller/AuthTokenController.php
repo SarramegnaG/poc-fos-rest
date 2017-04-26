@@ -16,16 +16,17 @@ class AuthTokenController extends Controller
 {
     /**
      * @ApiDoc(
-     *    description="Crée un token d'authentification",
-     *    input={"class"=CredentialsType::class, "name"=""},
-     *    statusCodes = {
-     *        201="Création avec succès",
-     *        400="Formulaire invalide"
-     *    },
-     *    responseMap={
+     *     section="AuthToken",
+     *     description="Crée un token d'authentification",
+     *     input={"class"=CredentialsType::class, "name"=""},
+     *     statusCodes = {
+     *         201="Création avec succès",
+     *         400="Formulaire invalide"
+     *     },
+     *     responseMap={
      *         201={"class"=AuthToken::class, "groups"={"auth-token"}},
      *         400={"class"=CredentialsType::class, "fos_rest_form_errors"=true, "name"=""}
-     *    }
+     *     }
      * )
      *
      * @Rest\Post("/auth-tokens")
@@ -69,6 +70,18 @@ class AuthTokenController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *     section="AuthToken",
+     *     description="Supprime un token d'authentification",
+     *     statusCodes = {
+     *         204="Supprimé avec succès",
+     *         400="Suppression non autorisée"
+     *     },
+     *     responseMap={
+     *         400={"class"=BadRequestHttpException::class, "fos_rest_exception"=true, "name"=""}
+     *     }
+     * )
+     *
      * @Rest\Delete("/auth-tokens/{id}")
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      */

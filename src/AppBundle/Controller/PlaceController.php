@@ -17,8 +17,9 @@ class PlaceController extends Controller
 {
     /**
      * @ApiDoc(
-     *    description="Récupère la liste des lieux de l'application",
-     *    output={"class"=Place::class, "collection"=true, "groups"={"place"}}
+     *     section="Places",
+     *     description="Récupère la liste des lieux de l'application",
+     *     output={"class"=Place::class, "collection"=true, "groups"={"place"}}
      * )
      *
      * @Rest\Get("/places")
@@ -59,6 +60,20 @@ class PlaceController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *     section="Places",
+     *     description="Récupère un lieu de l'application",
+     *     output={"class"=Place::class, "groups"={"place"}},
+     *     statusCodes={
+     *         200="Succès",
+     *         404="Lieu inexistant"
+     *     },
+     *     responseMap={
+     *         200={"class"=Place::class, "groups"={"place"}},
+     *         404={"class"=NotFoundHttpException::class, "fos_rest_exception"=true, "name"=""}
+     *     }
+     * )
+     *
      * @Rest\Get("/places/{id}")
      * @Rest\View(serializerGroups={"place"})
      */
@@ -76,16 +91,17 @@ class PlaceController extends Controller
 
     /**
      * @ApiDoc(
-     *    description="Crée un lieu dans l'application",
-     *    input={"class"=PlaceType::class, "name"=""},
-     *    statusCodes={
-     *        201="Création avec succès",
-     *        400="Formulaire invalide"
-     *    },
-     *    responseMap={
+     *     section="Places",
+     *     description="Crée un lieu dans l'application",
+     *     input={"class"=PlaceType::class, "name"=""},
+     *     statusCodes={
+     *         201="Création avec succès",
+     *         400="Formulaire invalide"
+     *     },
+     *     responseMap={
      *         201={"class"=Place::class, "groups"={"place"}},
      *         400={"class"=PlaceType::class, "fos_rest_form_errors"=true, "name"=""}
-     *    }
+     *     }
      * )
      *
      * @Rest\Post("/places")
@@ -109,6 +125,15 @@ class PlaceController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *     section="Places",
+     *     description="Supprime un lieu de l'application",
+     *     output={"class"=Place::class, "groups"={"place"}},
+     *     statusCodes={
+     *         204="Supprimé avec succès"
+     *     }
+     * )
+     *
      * @Rest\Delete("/places/{id}")
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      */
@@ -125,6 +150,23 @@ class PlaceController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *     section="Places",
+     *     description="Modifie entièrement un lieu de l'application",
+     *     input={"class"=PlaceType::class, "name"=""},
+     *     output={"class"=Place::class, "groups"={"place"}},
+     *     statusCodes={
+     *         200="Succès",
+     *         400="Formulaire invalide",
+     *         404="Lieu inexistant"
+     *     },
+     *     responseMap={
+     *         200={"class"=Place::class, "groups"={"place"}},
+     *         400={"class"=PlaceType::class, "fos_rest_form_errors"=true, "name"=""},
+     *         404={"class"=NotFoundHttpException::class, "fos_rest_exception"=true, "name"=""}
+     *     }
+     * )
+     *
      * @Rest\Put("/places/{id}")
      * @Rest\View(serializerGroups={"place"})
      */
@@ -134,6 +176,23 @@ class PlaceController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *     section="Places",
+     *     description="Modifie partiellement un lieu de l'application",
+     *     input={"class"=PlaceType::class, "name"=""},
+     *     output={"class"=Place::class, "groups"={"place"}},
+     *     statusCodes={
+     *         200="Succès",
+     *         400="Formulaire invalide",
+     *         404="Lieu inexistant"
+     *     },
+     *     responseMap={
+     *         200={"class"=Place::class, "groups"={"place"}},
+     *         400={"class"=PlaceType::class, "fos_rest_form_errors"=true, "name"=""},
+     *         404={"class"=NotFoundHttpException::class, "fos_rest_exception"=true, "name"=""}
+     *     }
+     * )
+     *
      * @Rest\Patch("/places/{id}")
      * @Rest\View(serializerGroups={"place"})
      */
