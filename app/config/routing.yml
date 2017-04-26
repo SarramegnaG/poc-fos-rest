@@ -1,3 +1,14 @@
+nelmio-api-doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /documentation
+
 app:
     resource: '@AppBundle/Controller/'
     type:     rest
+
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /documentation
+        permanent: true

@@ -17,6 +17,14 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        root:
+            pattern: ^/$
+            security: false
+
+        doc:
+            pattern: ^/documentation
+            security: false
+
         main:
             pattern: ^/
             stateless: true
