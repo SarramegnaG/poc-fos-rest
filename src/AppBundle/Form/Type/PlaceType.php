@@ -11,13 +11,18 @@ class PlaceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name');
-        $builder->add('address');
+        $builder->add('name', null, [
+            'description' => 'Nom du lieu',
+        ]);
+        $builder->add('address', null, [
+            'description' => 'Adresse complète du lieu',
+        ]);
         $builder->add('prices', CollectionType::class, [
             'entry_type' => PriceType::class,
             'allow_add' => true,
             'error_bubbling' => false,
             'by_reference' => false,
+            'description' => 'Liste des prix pratiqués',
         ]);
     }
 
