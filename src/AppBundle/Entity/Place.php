@@ -21,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Place
 {
     /**
+     * Identifiant unique du lieu
+     *
      * @var int
      *
      * @ORM\Column(type="integer")
